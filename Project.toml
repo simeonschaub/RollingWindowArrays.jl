@@ -3,5 +3,16 @@ uuid = "d191faf8-5603-4116-bb4f-9585dee8559b"
 authors = ["Simeon David Schaub <simeon@schaub.rocks> and contributors"]
 version = "0.1.0-DEV"
 
+[deps]
+OffsetArrays = "6fe1bfb0-de20-5000-8ca7-80f57d26f881"
+
+[weakdeps]
+DimensionalData = "0703355e-b756-11e9-17c0-8b28908087d0"
+
+[extensions]
+DimensionalDataExt = "DimensionalData"
+
 [compat]
+DimensionalData = "0.29.0"
+OffsetArrays = "1.14.1"
 julia = "1.10"
