@@ -40,7 +40,7 @@ multidimensional arrays, the `dims` argument is required and specifies the dimen
 to apply the rolling window.
 """
 function rolling(x::AbstractArray, window_size::Int; center = false, dims = nothing)
-    if x isa AbstractVector || dims === nothing
+    if !(x isa AbstractVector) && dims === nothing
         throw(ArgumentError("`dims` keyword is required for multidimensional arrays"))
     end
     offset = center ? window_size ÷ 2 : 0

@@ -13,5 +13,8 @@
     z = rolling(rand(10), 1, 3)
     @test z isa RollingWindowArrays.RollingWindowVector{SubArray{Float64, 1, Vector{Float64}, Tuple{UnitRange{Int64}}, true}, Vector{Float64}}
 
+    v = rand(10)
+    @test rolling(v, 0, 3) == rolling(v, 4)
+
     @test_throws ArgumentError rolling(x, 5)
 end
