@@ -75,3 +75,11 @@ jobs:
           using RollingWindowArrays
           DocMeta.setdocmeta!(RollingWindowArrays, :DocTestSetup, :(using RollingWindowArrays); recursive=true)
           doctest(RollingWindowArrays)
+  runic:
+    name: Runic formatting
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: fredrikekre/runic-action@v1
+        with:
+          version: '1'
