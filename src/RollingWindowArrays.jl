@@ -27,9 +27,24 @@ end
 function rolling(x::AbstractVector, before::Int, after::Int; dims = nothing)
     return RollingWindowVector(x, before, after)
 end
-
 function rolling(x::AbstractArray, before::Int, after::Int; dims)
     return RollingWindowVector(eachslice(x; dims), before, after)
+end
+
+"""
+    rolling(x::AbstractArray, window_size::Int; center = false[, dims])
+
+Create a rolling window view of array `x` with window size `window_size`. If `center` is true, the
+window is centered on each element, which is relevant for the axes of the resulting array. For
+multidimensional arrays, the `dims` argument is required and specifies the dimensions along which
+to apply the rolling window.
+"""
+function rolling(x::AbstractArray, window_size::Int; center = false, dims = nothing)
+    if x isa AbstractVector || dims === nothing
+        throw(ArgumentError("`dims` keyword is required for multidimensional arrays"))
+    end
+    offset = center ? window_size ÷ 2 : 0
+    return rolling(x, offset, window_size - offset - 1; dims)
 end
 
 end
