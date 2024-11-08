@@ -1,4 +1,4 @@
-name = "MovingWindowArrays"
+name = "RollingWindowArrays"
 uuid = "d191faf8-5603-4116-bb4f-9585dee8559b"
 authors = ["Simeon David Schaub <simeon@schaub.rocks> and contributors"]
 version = "0.1.0-DEV"

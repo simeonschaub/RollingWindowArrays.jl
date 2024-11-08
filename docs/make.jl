@@ -1,14 +1,14 @@
-using MovingWindowArrays
+using RollingWindowArrays
 using Documenter
 
-DocMeta.setdocmeta!(MovingWindowArrays, :DocTestSetup, :(using MovingWindowArrays); recursive=true)
+DocMeta.setdocmeta!(RollingWindowArrays, :DocTestSetup, :(using RollingWindowArrays); recursive=true)
 
 makedocs(;
-    modules=[MovingWindowArrays],
+    modules=[RollingWindowArrays],
     authors="Simeon David Schaub <simeon@schaub.rocks> and contributors",
-    sitename="MovingWindowArrays.jl",
+    sitename="RollingWindowArrays.jl",
     format=Documenter.HTML(;
-        canonical="https://simeonschaub.github.io/MovingWindowArrays.jl",
+        canonical="https://simeonschaub.github.io/RollingWindowArrays.jl",
         edit_link="main",
         assets=String[],
     ),
@@ -18,6 +18,6 @@ makedocs(;
 )
 
 deploydocs(;
-    repo="github.com/simeonschaub/MovingWindowArrays.jl",
+    repo="github.com/simeonschaub/RollingWindowArrays.jl",
     devbranch="main",
 )

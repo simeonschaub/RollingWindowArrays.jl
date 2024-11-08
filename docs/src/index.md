@@ -1,14 +1,14 @@
 ```@meta
-CurrentModule = MovingWindowArrays
+CurrentModule = RollingWindowArrays
 ```
 
-# MovingWindowArrays
+# RollingWindowArrays
 
-Documentation for [MovingWindowArrays](https://github.com/simeonschaub/MovingWindowArrays.jl).
+Documentation for [RollingWindowArrays](https://github.com/simeonschaub/RollingWindowArrays.jl).
 
 ```@index
 ```
 
 ```@autodocs
-Modules = [MovingWindowArrays]
+Modules = [RollingWindowArrays]
 ```
