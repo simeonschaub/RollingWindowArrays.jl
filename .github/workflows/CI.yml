@@ -72,6 +72,6 @@ jobs:
         shell: julia --project=docs --color=yes {0}
         run: |
           using Documenter: DocMeta, doctest
-          using MovingWindowArrays
-          DocMeta.setdocmeta!(MovingWindowArrays, :DocTestSetup, :(using MovingWindowArrays); recursive=true)
-          doctest(MovingWindowArrays)
+          using RollingWindowArrays
+          DocMeta.setdocmeta!(RollingWindowArrays, :DocTestSetup, :(using RollingWindowArrays); recursive=true)
+          doctest(RollingWindowArrays)
