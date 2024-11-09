@@ -4,15 +4,19 @@ using OffsetArrays
 
 export rolling
 
-struct RollingWindowVector{T, A <: AbstractVector} <: AbstractVector{T}
+function _selectdim(a::AbstractArray, ::Val{dims}, idx::UnitRange{Int}) where {dims}
+    return selectdim(a, dims, idx)
+end
+
+struct RollingWindowVector{T, A <: AbstractArray, dims} <: AbstractVector{T}
     parent::A
     before::Int
     after::Int
 end
 
-function RollingWindowVector(parent::A, before::Int, after::Int) where {A <: AbstractVector}
-    T = Core.Compiler.return_type(view, Tuple{A, UnitRange{Int}})
-    return RollingWindowVector{T, A}(parent, before, after)
+function RollingWindowVector(parent::A, before::Int, after::Int; dims) where {A <: AbstractArray}
+    T = Core.Compiler.return_type(_selectdim, Tuple{A, Val{dims}, UnitRange{Int}})
+    return RollingWindowVector{T, A, dims}(parent, before, after)
 end
 function Base.size((; parent, before, after)::RollingWindowVector)
     return (size(parent, 1) - before - after,)
@@ -20,15 +24,18 @@ end
 function Base.axes((; parent, before, after)::RollingWindowVector)
     return (axes(parent, 1)[(begin + before):(end - after)],)
 end
-Base.@propagate_inbounds function Base.getindex((; parent, before, after)::RollingWindowVector, i::Int)
-    return view(parent, (i - before):(i + after))
+Base.@propagate_inbounds function Base.getindex(
+        (; parent, before, after)::RollingWindowVector{<:Any, <:Any, dims}, i::Int
+    ) where {dims}
+    return _selectdim(parent, Val(dims), (i - before):(i + after))
 end
 
 function rolling(x::AbstractVector, before::Int, after::Int; dims = nothing)
-    return RollingWindowVector(x, before, after)
+    dims = dims === nothing ? 1 : dims
+    return RollingWindowVector(x, before, after; dims)
 end
 function rolling(x::AbstractArray, before::Int, after::Int; dims)
-    return RollingWindowVector(eachslice(x; dims), before, after)
+    return RollingWindowVector(x, before, after; dims)
 end
 
 """

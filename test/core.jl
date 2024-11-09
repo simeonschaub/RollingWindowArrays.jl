@@ -3,12 +3,11 @@
 
     x = rand(10, 10)
     y = rolling(x, 2, 2; dims = 2)
-    # :)
-    @test y isa RollingWindowArrays.RollingWindowVector{SubArray{SubArray{Float64, 1, Matrix{Float64}, Tuple{Base.Slice{Base.OneTo{Int64}}, Int64}, true}, 1, ColumnSlices{Matrix{Float64}, Tuple{Base.OneTo{Int64}}, SubArray{Float64, 1, Matrix{Float64}, Tuple{Base.Slice{Base.OneTo{Int64}}, Int64}, true}}, Tuple{UnitRange{Int64}}, false}, ColumnSlices{Matrix{Float64}, Tuple{Base.OneTo{Int64}}, SubArray{Float64, 1, Matrix{Float64}, Tuple{Base.Slice{Base.OneTo{Int64}}, Int64}, true}}}
+    @test y isa RollingWindowArrays.RollingWindowVector{SubArray{Float64, 2, Matrix{Float64}, Tuple{Base.Slice{Base.OneTo{Int64}}, UnitRange{Int64}}, true}, Matrix{Float64}, 2}
     @test length(y) == 6
     @test y == rolling(x, 5; center = true, dims = 2)
 
-    @test mean.(y) isa OffsetVector{Vector{Float64}, Vector{Vector{Float64}}}
+    @test mean.(y; dims = 2) isa OffsetVector{Matrix{Float64}, Vector{Matrix{Float64}}}
 
     z = rolling(rand(10), 1, 3)
     @test z isa RollingWindowArrays.RollingWindowVector{SubArray{Float64, 1, Vector{Float64}, Tuple{UnitRange{Int64}}, true}, Vector{Float64}}
