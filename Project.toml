@@ -4,8 +4,10 @@ authors = ["Simeon David Schaub <simeon@schaub.rocks> and contributors"]
 version = "1.0.0"
 
 [deps]
-DimensionalData = "0703355e-b756-11e9-17c0-8b28908087d0"
 OffsetArrays = "6fe1bfb0-de20-5000-8ca7-80f57d26f881"
+
+[weakdeps]
+DimensionalData = "0703355e-b756-11e9-17c0-8b28908087d0"
 
 [extensions]
 DimensionalDataExt = "DimensionalData"
