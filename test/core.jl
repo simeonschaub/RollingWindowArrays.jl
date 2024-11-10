@@ -8,6 +8,7 @@
     @test y == rolling(x, 5; center = true, dims = 2)
 
     @test mean.(y; dims = 2) isa OffsetVector{Matrix{Float64}, Vector{Matrix{Float64}}}
+    @test mean.(rolling(x, 5; dims = 2); dims = 2) isa Vector{Matrix{Float64}}
 
     z = rolling(rand(10), 1, 3)
     @test z isa RollingWindowArrays.RollingWindowVector{SubArray{Float64, 1, Vector{Float64}, Tuple{UnitRange{Int64}}, true}, 1, Vector{Float64}, Int64}

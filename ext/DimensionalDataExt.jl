@@ -3,7 +3,12 @@ module DimensionalDataExt
 using RollingWindowArrays
 using RollingWindowArrays: RollingWindowVector, BeginTo
 using DimensionalData
-using Base: IdentityUnitRange
+using DimensionalData.Dimensions: DimUnitRange, Dimension
+using DimensionalData.Dimensions.Lookups: Sampled
+using Base: OneTo, IdentityUnitRange
+
+Base.getindex(a::DimUnitRange{<:Any, <:Base.OneTo}, b::BeginTo) = a[OneTo(last(b))]
+Base.getindex(a::Dimension{<:Sampled{<:Any, <:UnitRange}}, b::IdentityUnitRange{BeginTo}) = a[IdentityUnitRange(OneTo(last(b)))]
 
 function RollingWindowArrays.rolling(x::AbstractDimVector, before::Union{Int, Nothing}, after::Int; dims = 1)
     dims = dimnum(x, dims)

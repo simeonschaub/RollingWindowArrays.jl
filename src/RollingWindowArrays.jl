@@ -1,6 +1,7 @@
 module RollingWindowArrays
 
 using OffsetArrays
+using Base: OneTo, IdentityUnitRange
 
 export rolling
 
@@ -14,8 +15,8 @@ struct BeginTo <: AbstractUnitRange{Int}
     stop::Int
 end
 
-@inline Base.getindex(a::Base.OneTo, b::BeginTo) = (@boundscheck checkbounds(a, b); Base.OneTo(last(b)))
-@inline Base.getindex(a::Base.OneTo, b::Base.IdentityUnitRange{BeginTo}) = (@boundscheck checkbounds(a, b); Base.OneTo(last(b)))
+Base.getindex(a::OneTo, b::BeginTo) = a[OneTo(last(b))]
+Base.getindex(a::OneTo, b::IdentityUnitRange{BeginTo}) = a[IdenitiyUnitRange(OneTo(last(b)))]
 
 struct RollingWindowVector{T, dims, A <: AbstractArray, B <: Union{Int, Nothing}} <: AbstractVector{T}
     parent::A

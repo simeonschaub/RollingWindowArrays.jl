@@ -28,7 +28,7 @@ julia> x = rand(10)
  0.3541576787013937
 
 julia> rolling(x, 3)
-8-element RollingWindowArrays.RollingWindowVector{SubArray{Float64, 1, Vector{Float64}, Tuple{UnitRange{Int64}}, true}, Vector{Float64}, 1} with indices 1:8:
+8-element RollingWindowArrays.RollingWindowVector{SubArray{Float64, 1, Vector{Float64}, Tuple{UnitRange{Int64}}, true}, 1, Vector{Float64}, Nothing}:
  [0.5641112488276627, 0.22120012232070818, 0.3679067902780746]
  [0.22120012232070818, 0.3679067902780746, 0.5623875869261128]
  [0.3679067902780746, 0.5623875869261128, 0.6440904700394701]
@@ -45,7 +45,7 @@ julia> rolling(x, 3)
 
  ```julia-repl
 julia> rolling(x, 3; center=true)
-8-element RollingWindowArrays.RollingWindowVector{SubArray{Float64, 1, Vector{Float64}, Tuple{UnitRange{Int64}}, true}, Vector{Float64}, 1} with indices 2:9:
+8-element RollingWindowArrays.RollingWindowVector{SubArray{Float64, 1, Vector{Float64}, Tuple{UnitRange{Int64}}, true}, 1, Vector{Float64}, Int64} with indices 2:9:
  [0.5641112488276627, 0.22120012232070818, 0.3679067902780746]
  [0.22120012232070818, 0.3679067902780746, 0.5623875869261128]
  [0.3679067902780746, 0.5623875869261128, 0.6440904700394701]
