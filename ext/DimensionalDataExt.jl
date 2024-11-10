@@ -21,7 +21,7 @@ end
 
 function RollingWindowArrays.rolling(x::AbstractDimArray, before::Int, after::Int; dims)
     ax = dims isa Int ? DimensionalData.dims(x)[dims] : DimensionalData.dims(x, dims)
-    others = dims isa Int ? (DimensionalData.dims(x)[1:dims - 1]..., DimensionalData.dims(x)[dims + 1:end]...) : otherdims(x, dims)
+    others = dims isa Int ? (DimensionalData.dims(x)[1:(dims - 1)]..., DimensionalData.dims(x)[(dims + 1):end]...) : otherdims(x, dims)
     return DimArray(
         RollingWindowVector(x, before, after; dims),
         (ax[IdentityUnitRange((begin + before):(end - after))],);
