@@ -14,7 +14,7 @@ struct RollingWindowVector{T, A <: AbstractArray, dims} <: AbstractVector{T}
     after::Int
 end
 
-function RollingWindowVector(parent::A, before::Int, after::Int; dims) where {A <: AbstractArray}
+function RollingWindowVector(parent::A, before::Int, after::Int; dims::Int) where {A <: AbstractArray}
     T = Core.Compiler.return_type(_selectdim, Tuple{A, Val{dims}, UnitRange{Int}})
     return RollingWindowVector{T, A, dims}(parent, before, after)
 end
