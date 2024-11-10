@@ -4,7 +4,6 @@ authors = ["Simeon David Schaub <simeon@schaub.rocks> and contributors"]
 version = "1.0.0"
 
 [deps]
-ConstructionBase = "187b0558-2788-49d3-abe0-74a17ed4e7c9"
 DimensionalData = "0703355e-b756-11e9-17c0-8b28908087d0"
 OffsetArrays = "6fe1bfb0-de20-5000-8ca7-80f57d26f881"
 
@@ -12,7 +11,6 @@ OffsetArrays = "6fe1bfb0-de20-5000-8ca7-80f57d26f881"
 DimensionalDataExt = "DimensionalData"
 
 [compat]
-ConstructionBase = "1.5.8"
 DimensionalData = "0.28, 0.29"
 OffsetArrays = "1.14.1"
 julia = "1.10"

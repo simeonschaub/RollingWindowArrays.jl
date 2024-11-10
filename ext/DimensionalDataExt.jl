@@ -4,7 +4,6 @@ using RollingWindowArrays
 using RollingWindowArrays: RollingWindowVector
 using DimensionalData
 using Base: IdentityUnitRange
-using ConstructionBase: constructorof
 
 function RollingWindowArrays._selectdim(a::AbstractDimArray, ::Val{dims}, idx::UnitRange{Int}) where {dims <: DimensionalData.Dimension}
     return view(a, DimensionalData.dims2indices(a, dims(idx))...)
