@@ -8,32 +8,41 @@ function _selectdim(a::AbstractArray, ::Val{dims}, idx::UnitRange{Int}) where {d
     return selectdim(a, dims, idx)
 end
 
-struct RollingWindowVector{T, A <: AbstractArray, dims} <: AbstractVector{T}
+# range that semantically always starts at `begin` of the indexed array
+struct BeginTo <: AbstractUnitRange{Int}
+    start::Int
+    stop::Int
+end
+
+@inline Base.getindex(a::Base.OneTo, b::BeginTo) = (@boundscheck checkbounds(a, b); Base.OneTo(last(b)))
+@inline Base.getindex(a::Base.OneTo, b::Base.IdentityUnitRange{BeginTo}) = (@boundscheck checkbounds(a, b); Base.OneTo(last(b)))
+
+struct RollingWindowVector{T, dims, A <: AbstractArray, B <: Union{Int, Nothing}} <: AbstractVector{T}
     parent::A
-    before::Int
+    before::B
     after::Int
 end
 
-function RollingWindowVector(parent::A, before::Int, after::Int; dims::Int) where {A <: AbstractArray}
+function RollingWindowVector(parent::A, before::B, after::Int; dims::Int) where {A <: AbstractArray, B <: Union{Int, Nothing}}
     T = Core.Compiler.return_type(_selectdim, Tuple{A, Val{dims}, UnitRange{Int}})
-    return RollingWindowVector{T, A, dims}(parent, before, after)
+    return RollingWindowVector{T, dims, A, B}(parent, before, after)
 end
-function Base.size((; parent, before, after)::RollingWindowVector{<:Any, <:Any, dims}) where {dims}
+function Base.size((; parent, before, after)::RollingWindowVector{<:Any, dims}) where {dims}
+    before = before === nothing ? 0 : before
     return (size(parent, dims) - before - after,)
 end
-function Base.axes((; parent, before, after)::RollingWindowVector{<:Any, <:Any, dims}) where {dims}
-    return (axes(parent, dims)[(begin + before):(end - after)],)
+function Base.axes((; parent, before, after)::RollingWindowVector{<:Any, dims}) where {dims}
+    return (axes(parent, dims)[before === nothing ? BeginTo(begin, end - after) : (begin + before):(end - after)],)
 end
-Base.@propagate_inbounds function Base.getindex(
-        (; parent, before, after)::RollingWindowVector{<:Any, <:Any, dims}, i::Int
-    ) where {dims}
+Base.@propagate_inbounds function Base.getindex((; parent, before, after)::RollingWindowVector{<:Any, dims}, i::Int) where {dims}
+    before = before === nothing ? 0 : before
     return _selectdim(parent, Val(dims), (i - before):(i + after))
 end
 
-function rolling(x::AbstractVector, before::Int, after::Int; dims = 1)
+function rolling(x::AbstractVector, before::Union{Int, Nothing}, after::Int; dims = 1)
     return RollingWindowVector(x, before, after; dims)
 end
-function rolling(x::AbstractArray, before::Int, after::Int; dims)
+function rolling(x::AbstractArray, before::Union{Int, Nothing}, after::Int; dims)
     return RollingWindowVector(x, before, after; dims)
 end
 
@@ -53,8 +62,12 @@ function rolling(x::AbstractArray, window_size::Int; center = false, dims = noth
             throw(ArgumentError("`dims` keyword is required for multidimensional arrays"))
         end
     end
-    offset = center ? window_size ÷ 2 : 0
-    return rolling(x, offset, window_size - offset - 1; dims)
+    if center
+        offset = window_size ÷ 2
+        return rolling(x, offset, window_size - offset - 1; dims)
+    else
+        return rolling(x, nothing, window_size - 1; dims)
+    end
 end
 
 end
