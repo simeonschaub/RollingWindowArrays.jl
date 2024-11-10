@@ -8,6 +8,7 @@
     @test length(y) == 6
     @test axes(y) == (3:8,)
     @test y == rolling(x, 5; center = true, dims = X)
+    @test axes(rolling(x, 5; dims = X), 1) isa DimensionalData.Dimensions.DimUnitRange{Int64, UnitRange{Int64}}
 
     @test mean.(y; dims = X) isa DimArray{DimMatrix{Float64, Tuple{X{DimensionalData.Dimensions.Lookups.Sampled{Float64, StepRangeLen{Float64, Base.TwicePrecision{Float64}, Base.TwicePrecision{Float64}, Int64}, DimensionalData.Dimensions.Lookups.ForwardOrdered, DimensionalData.Dimensions.Lookups.Regular{Float64}, DimensionalData.Dimensions.Lookups.Points, DimensionalData.Dimensions.Lookups.NoMetadata}}, Ti{DimensionalData.Dimensions.Lookups.Sampled{Int64, UnitRange{Int64}, DimensionalData.Dimensions.Lookups.ForwardOrdered, DimensionalData.Dimensions.Lookups.Regular{Int64}, DimensionalData.Dimensions.Lookups.Points, DimensionalData.Dimensions.Lookups.NoMetadata}}}, Tuple{}, Matrix{Float64}, DimensionalData.NoName, DimensionalData.Dimensions.Lookups.NoMetadata}, 1}
 

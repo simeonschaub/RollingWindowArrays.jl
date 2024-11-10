@@ -16,7 +16,6 @@ struct BeginTo <: AbstractUnitRange{Int}
 end
 
 Base.getindex(a::OneTo, b::BeginTo) = a[OneTo(last(b))]
-Base.getindex(a::OneTo, b::IdentityUnitRange{BeginTo}) = a[IdenitiyUnitRange(OneTo(last(b)))]
 
 struct RollingWindowVector{T, dims, A <: AbstractArray, B <: Union{Int, Nothing}} <: AbstractVector{T}
     parent::A
