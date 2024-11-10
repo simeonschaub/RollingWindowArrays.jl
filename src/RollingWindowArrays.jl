@@ -18,11 +18,11 @@ function RollingWindowVector(parent::A, before::Int, after::Int; dims) where {A 
     T = Core.Compiler.return_type(_selectdim, Tuple{A, Val{dims}, UnitRange{Int}})
     return RollingWindowVector{T, A, dims}(parent, before, after)
 end
-function Base.size((; parent, before, after)::RollingWindowVector)
-    return (size(parent, 1) - before - after,)
+function Base.size((; parent, before, after)::RollingWindowVector{<:Any, <:Any, dims}) where {dims}
+    return (size(parent, dims) - before - after,)
 end
-function Base.axes((; parent, before, after)::RollingWindowVector)
-    return (axes(parent, 1)[(begin + before):(end - after)],)
+function Base.axes((; parent, before, after)::RollingWindowVector{<:Any, <:Any, dims}) where {dims}
+    return (axes(parent, dims)[(begin + before):(end - after)],)
 end
 Base.@propagate_inbounds function Base.getindex(
         (; parent, before, after)::RollingWindowVector{<:Any, <:Any, dims}, i::Int
@@ -30,8 +30,7 @@ Base.@propagate_inbounds function Base.getindex(
     return _selectdim(parent, Val(dims), (i - before):(i + after))
 end
 
-function rolling(x::AbstractVector, before::Int, after::Int; dims = nothing)
-    dims = dims === nothing ? 1 : dims
+function rolling(x::AbstractVector, before::Int, after::Int; dims = 1)
     return RollingWindowVector(x, before, after; dims)
 end
 function rolling(x::AbstractArray, before::Int, after::Int; dims)
@@ -47,8 +46,12 @@ multidimensional arrays, the `dims` argument is required and specifies the dimen
 to apply the rolling window.
 """
 function rolling(x::AbstractArray, window_size::Int; center = false, dims = nothing)
-    if !(x isa AbstractVector) && dims === nothing
-        throw(ArgumentError("`dims` keyword is required for multidimensional arrays"))
+    if dims === nothing
+        if x isa AbstractVector
+            dims = 1
+        else
+            throw(ArgumentError("`dims` keyword is required for multidimensional arrays"))
+        end
     end
     offset = center ? window_size ÷ 2 : 0
     return rolling(x, offset, window_size - offset - 1; dims)
