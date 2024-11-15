@@ -22,3 +22,10 @@
     @test identity.(rolling(rand(10), 3)) isa Vector{SubArray{Float64, 1, Vector{Float64}, Tuple{UnitRange{Int64}}, true}}
     @test axes(identity.(rolling(OffsetArray(rand(10), 0:9), 3))) == (OffsetArrays.IdOffsetRange(values = 0:7, indices = 0:7),)
 end
+
+@testitem "AllocCheck" begin
+    using AllocCheck
+
+    @test isempty(check_allocs(rolling, Tuple{Vector{Float64}, Int}))
+    @test length(check_allocs((x, n) -> sum.(rolling(x, n)), Tuple{Vector{Float64}, Int})) ≤ 3
+end

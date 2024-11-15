@@ -23,7 +23,7 @@ struct RollingWindowVector{T, dims, A <: AbstractArray, B <: Union{Int, Nothing}
     after::Int
 end
 
-function RollingWindowVector(parent::A, before::B, after::Int; dims::Int) where {A <: AbstractArray, B <: Union{Int, Nothing}}
+Base.@constprop :aggressive function RollingWindowVector(parent::A, before::B, after::Int; dims::Int) where {A <: AbstractArray, B <: Union{Int, Nothing}}
     T = Core.Compiler.return_type(_selectdim, Tuple{A, Val{dims}, UnitRange{Int}})
     return RollingWindowVector{T, dims, A, B}(parent, before, after)
 end
