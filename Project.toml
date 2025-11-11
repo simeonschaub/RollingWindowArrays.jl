@@ -1,7 +1,7 @@
 name = "RollingWindowArrays"
 uuid = "d191faf8-5603-4116-bb4f-9585dee8559b"
 authors = ["Simeon David Schaub <simeon@schaub.rocks> and contributors"]
-version = "1.0.1"
+version = "1.0.2"
 
 [deps]
 OffsetArrays = "6fe1bfb0-de20-5000-8ca7-80f57d26f881"
