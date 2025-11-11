@@ -31,8 +31,10 @@ function Base.size((; parent, before, after)::RollingWindowVector{<:Any, dims}) 
     before = before === nothing ? 0 : before
     return (size(parent, dims) - before - after,)
 end
+maybe_id_unitrange(r) = IdentityUnitRange(r)
+maybe_id_unitrange(r::OneTo) = r
 function Base.axes((; parent, before, after)::RollingWindowVector{<:Any, dims}) where {dims}
-    return (axes(parent, dims)[before === nothing ? BeginTo(begin, end - after) : (begin + before):(end - after)],)
+    return (maybe_id_unitrange(axes(parent, dims)[before === nothing ? BeginTo(begin, end - after) : (begin + before):(end - after)]),)
 end
 Base.@propagate_inbounds function Base.getindex((; parent, before, after)::RollingWindowVector{<:Any, dims}, i::Int) where {dims}
     before = before === nothing ? 0 : before
